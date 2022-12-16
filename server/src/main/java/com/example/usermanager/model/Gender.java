@@ -1,4 +1,4 @@
-package com.example.usermanager;
+package com.example.usermanager.model;
 
 public enum Gender {
     MALE, FEMALE

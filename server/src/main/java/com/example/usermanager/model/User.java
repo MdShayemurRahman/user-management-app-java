@@ -1,11 +1,12 @@
-package com.example.usermanager;
+package com.example.usermanager.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@Document
+@Document(collection = "userJavaDB")
 public class User {
 
     @Id // annotate with id
@@ -13,6 +14,7 @@ public class User {
 
     private String firstName;
     private String lastName;
+    @Indexed(unique = true)
     private String email;
     private String phoneNumber;
     private Gender gender;

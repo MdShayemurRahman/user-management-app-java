@@ -1,4 +1,4 @@
-package com.example.usermanager;
+package com.example.usermanager.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
