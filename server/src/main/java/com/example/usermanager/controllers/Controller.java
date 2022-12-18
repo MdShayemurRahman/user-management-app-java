@@ -1,16 +1,19 @@
 package com.example.usermanager.controllers;
 
+import com.example.usermanager.exception.UserNotFoundException;
 import com.example.usermanager.model.User;
 import com.example.usermanager.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v2")
+@CrossOrigin("http://localhost:3000")
 public class Controller {
 
     // CRUD Operation.
@@ -33,7 +36,23 @@ public class Controller {
     @DeleteMapping("/users/delete/{id}")
     public String deleteAnUser(@PathVariable String id) {
         userRepository.deleteById(id);
+
         return "User deleted!";
+    }
+
+    /// update a user
+    @PutMapping("/users/update/{id}")
+    public User updateUser(
+            @RequestBody User newUser,
+            @PathVariable String id) throws UserPrincipalNotFoundException {
+        return userRepository.findById(id)
+                .map(user -> {
+                    user.setFirstName(newUser.getFirstName());
+                    user.setLastName(newUser.getLastName());
+                    user.setEmail(newUser.getEmail());
+                    user.setPhoneNumber(newUser.getPhoneNumber());
+                    return userRepository.save(user);
+                }).orElseThrow(()->new UserNotFoundException(id));
     }
 
     /// Create a new user.
